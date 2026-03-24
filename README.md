@@ -26,6 +26,38 @@ python3 -m venv .venv && source .venv/bin/activate && pip install -r requirement
 python3 app.py --help
 ```
 
+## Docker Compose
+This repo includes a `compose.yml` setup so you can run the tool with FFmpeg and Python already installed inside the container.
+
+### What the container includes
+- Python 3.11
+- `ffmpeg` and `ffprobe` from the Debian package
+- Project dependencies from `requirements.txt`
+
+### Build
+```bash
+docker compose build
+```
+
+### Default behavior
+```bash
+docker compose run --rm ffmpeg-tool
+```
+The default container command prints the tool help, so you can override it with the exact `python app.py ...` command you want.
+
+### Example
+```bash
+docker compose run --rm ffmpeg-tool python app.py /data/input/source.mp4 /data/output/clip.gif --fps 12 --width 480
+```
+
+Use `./data`, `./output`, and `./config` as convenient bind mounts for input media, generated output, and JSON/config assets.
+Replace the example paths with whatever files you want to process.
+
+### Notes
+- The container image already provides `ffmpeg` / `ffprobe`, so you do not need them installed on the host.
+- Bind-mounted paths in examples use container paths such as `/data/...` and `/output/...`.
+- For long-running services, use `docker compose up -d` and `docker compose logs -f`.
+
 ## Configuration
 - Prefer CLI flags for one-off runs
 - Some repos include `config.example.json` for future extension

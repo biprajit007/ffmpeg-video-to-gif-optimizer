@@ -1,0 +1,12 @@
+services:
+  ffmpeg-tool:
+    build:
+      context: .
+    container_name: ffmpeg-video-to-gif-optimizer
+    command: python app.py --help
+    volumes:
+      - ./data:/data
+      - ./output:/output
+      - ./config:/config
+    environment:
+      PYTHONUNBUFFERED: "1"
